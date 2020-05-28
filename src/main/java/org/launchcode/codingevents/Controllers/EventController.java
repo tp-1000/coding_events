@@ -31,8 +31,8 @@ public class EventController {
     }
 
     @PostMapping("create")  // For a Post request to events/create (the initial GET returns the create.html) it will be redirected to the default events Get mapping.. (events/index) with the list
-    public String createEvent(@RequestParam String eventName) {
-        events.add(new Event(eventName));
+    public String processEventForm(@RequestParam String eventName, @RequestParam String eventDescription) {
+        events.add(new Event(eventName, eventDescription));
         return "redirect:"; // redicrect to root
     }
 }
