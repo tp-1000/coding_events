@@ -4,10 +4,7 @@ import org.launchcode.codingevents.data.EventData;
 import org.launchcode.codingevents.models.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +27,8 @@ public class EventController {
     }
 
     @PostMapping("create")  // For a Post request to events/create (the initial GET returns the create.html) it will be redirected to the default events Get mapping.. (events/index) with the list
-    public String processEventForm(@RequestParam String eventName, @RequestParam String eventDescription) {
-        EventData.add(new Event(eventName, eventDescription));
+    public String processEventForm(@ModelAttribute Event newEvent) {
+        EventData.add(newEvent);
         return "redirect:"; // redicrect to root
     }
 
