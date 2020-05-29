@@ -18,7 +18,7 @@ public class EventController {
 
     @GetMapping
     public String displayAllEvents(Model model) {
-        //model.addAttribute( "title", "All Events")
+        model.addAttribute( "title", "All Events");
         model.addAttribute("events", EventData.getAll());
         return "events/index";
     }
@@ -33,5 +33,24 @@ public class EventController {
     public String processEventForm(@RequestParam String eventName, @RequestParam String eventDescription) {
         EventData.add(new Event(eventName, eventDescription));
         return "redirect:"; // redicrect to root
+    }
+
+    @GetMapping("delete") // not same model as in the MVC// the class
+    public String displayDeleteEventForm(Model model) {
+        model.addAttribute("title", "Delete Events");
+        model.addAttribute("events", EventData.getAll());
+        return "events/delete";
+    }
+
+    @PostMapping("delete") // allows for no parapeters to be passed
+    public String processDeleteEventForm(@RequestParam(required = false) int[] eventIds) {
+
+        if(eventIds != null) {
+            for (int id : eventIds) {
+                EventData.remove(id);
+            }
+        }
+
+        return "redirect:";
     }
 }
