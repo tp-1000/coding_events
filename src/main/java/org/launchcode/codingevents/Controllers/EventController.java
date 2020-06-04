@@ -4,8 +4,10 @@ import org.launchcode.codingevents.data.EventData;
 import org.launchcode.codingevents.models.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +24,18 @@ public class EventController {
 
     //lives at /events/create   (for a get request deliver template events/create
     @GetMapping("create")
-    public String renderCreateEventForm() {
+    public String renderCreateEventForm(Model model) {
+        model.addAttribute("title", "Create Event");
         return "events/create";
     }
 
     @PostMapping("create")  // For a Post request to events/create (the initial GET returns the create.html) it will be redirected to the default events Get mapping.. (events/index) with the list
-    public String processEventForm(@ModelAttribute Event newEvent) {
+    public String processEventForm(@ModelAttribute @Valid Event newEvent, Errors errors, Model model) {
+        if(errors.hasErrors()) {
+            model.addAttribute( "title", "Create Event");
+            model.addAttribute("errorMsg", "Bad data!");
+            return "events/create";
+        }
         EventData.add(newEvent);
         return "redirect:"; // redicrect to root
     }
@@ -53,6 +61,7 @@ public class EventController {
 
     @GetMapping("/edit/{eventId}")
     public String displayEditFrom(Model model, @PathVariable int eventId) {
+        model.addAttribute("title", "Edit Event");
         Event event = EventData.getEvent(eventId);
         model.addAttribute("event", event);
      return "events/edit";

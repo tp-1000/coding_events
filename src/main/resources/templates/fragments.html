@@ -3,7 +3,7 @@
 
 <head th:fragment="head">
     <meta charset="UTF-8">
-    <title>Coding Events</title>
+    <title th:text="${title}"></title>
 
 <!--    commented out, but links with local resources with @{} path base = resources/static/-->
 <!--    <script th:src="@{/scripts.js}"></script>-->
@@ -23,7 +23,6 @@ body class="container">
         <li class="nav-item"><a class="nav-link" href="/events/delete">Delete event</a></li>
     </ul>
 </nav>
-
 
 
 </body>

@@ -5,9 +5,11 @@
 
 <body class="container">
 
-    <h1>Create Event</h1>
+    <h1 th:text="${title}"></h1>
 
     <nav th:replace="fragments :: navigation"></nav>
+
+    <p th:text="${errorMsg}" style="color:red;"></p>
 
     <form method="post" action="/events/create">
         <div class="form-group">
