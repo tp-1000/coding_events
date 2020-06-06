@@ -14,14 +14,17 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID</th><th>Name</th><th>Description</th><th>Contact Email</th>
+                <th>ID</th><th>Name</th><th>Description</th><th>Zipcode</th><th>Contact Email</th><th>RSVP</th><th>Number of Guests</th>
             </tr>
         </thead>
         <tr th:each="event: ${events}">
             <td th:text="${event.id}"></td>
             <td th:text="${event.name}"></td>
             <td th:text="${event.description}"></td>
+            <td th:text="${event.zipcode}"></td>
             <td th:text="${event.contactEmail}"></td>
+            <td th:text="${event.isRSVPRequired}"></td>
+            <td th:text="${event.attendees}"></td>
             <td><a th:href="@{/events/edit/{id}(id=${event.id})}">Edit</a></td>
         </tr>
     </table>

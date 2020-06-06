@@ -1,8 +1,6 @@
 package org.launchcode.codingevents.models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Objects;
 
 public class Event {
@@ -18,12 +16,29 @@ public class Event {
     @Email(message = "Invalid email. Try again.")
     private String contactEmail;
 
-    public Event(String name, String description, String contactEmail) {
+    @NotEmpty(message = "Required")
+    @Digits(integer = 5, fraction = 0, message = "Provide 5 digit zipcode")
+    private String zipcode;
+
+    @AssertTrue(message = "Must be true")
+    private boolean isRSVPRequired;
+
+    @Min(message = "Have at least one guest.", value = 1)
+    @Max(message = "Only 999 guest allowed.", value = 999)
+    private String attendees;
+
+
+
+
+    public Event(String name, String description, String contactEmail, String zipcode, @Min(message = "Have at least one guest.", value = 1) @Max(message = "Only 999 guest allowed.", value = 999) String attendees, @AssertTrue(message = "Must be true") boolean isRSVPRequired) {
         this();
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
+        this.zipcode = zipcode;
 
+        this.attendees = attendees;
+        this.isRSVPRequired = isRSVPRequired;
     }
 
     public Event() {
@@ -33,6 +48,30 @@ public class Event {
     @Override
     public String toString() {
         return name;
+    }
+
+    public boolean getIsRSVPRequired() {
+        return isRSVPRequired;
+    }
+
+    public void setIsRSVPRequired(boolean isRSVPRequired) {
+        this.isRSVPRequired = isRSVPRequired;
+    }
+
+    public String getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(String attendees) {
+        this.attendees = attendees;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public String getContactEmail() {

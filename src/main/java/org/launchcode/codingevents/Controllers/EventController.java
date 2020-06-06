@@ -61,7 +61,7 @@ public class EventController {
     }
 
     @GetMapping("/edit/{eventId}")
-    public String displayEditFrom(Model model, @PathVariable int eventId) {
+    public String displayEditFrom(@PathVariable int eventId, Model model) {
         model.addAttribute("title", "Edit Event");
         Event event = EventData.getEvent(eventId);
         model.addAttribute("event", event);
@@ -69,12 +69,21 @@ public class EventController {
     }
 
     @PostMapping("/edit")
-    public String processEditForm(int eventId, String name, String description) {
-        Event event = EventData.getEvent(eventId);
-        event.setName(name);
-        event.setDescription(description);
+    public String processEditForm(@ModelAttribute @Valid Event event, Errors errors, int eventId) {
+        EventData.remove(eventId);
+        if(errors.hasErrors()) {
+            return "events/edit";
+    } // very picky about parameter mapping
+        EventData.add(event);
         return "redirect:";
     }
+//
+//    warrants a bit of an explanation after the trouble, @ModelAttribute matches objects meeting the criteria an dadds them to the model as
+//     temp (working) object -- the other issue is that if I redirect to a handler, it makes two requests, a post and the the redirect. The post can truely be through
+//    of as a processor (they all can) but the process is required for a page to render i a coherent fashion. The request of the html page directly solved the issue of id numnbers
+//    getting out of sync with page requests and the (working) objects, as prior every invalid submission would increment the counter away. This method removes the current object
+//     from the list and keeps track of the current (working) object, I imagine an issue could come up if someone discontets before finalizing the object into the hash, but could
+//    be resolved storing a copy incomplete thought, although if it were to unexpectly say-- exit id loose eveything anyways. proably the proper solution would be a try finalize block
 
 
 }
