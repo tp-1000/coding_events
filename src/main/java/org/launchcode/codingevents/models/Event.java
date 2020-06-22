@@ -1,11 +1,17 @@
 package org.launchcode.codingevents.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.util.Objects;
 
+@Entity
 public class Event {
+
+    @Id
+    @GeneratedValue
     private int id;
-    private static int nextId = 1;
 
     @Size(min = 3, max = 50, message = "Name must be between 3-50 characters")
     @NotBlank(message="Name is required")
@@ -23,15 +29,16 @@ public class Event {
     @AssertTrue(message = "Must be true")
     private boolean isRSVPRequired;
 
-    @Min(message = "Have at least one guest.", value = 1)
+    @Min(message = "Must have at least one guest.", value = 1)
     @Max(message = "Only 999 guest allowed.", value = 999)
     private String attendees;
 
+    private EventType type;
 
 
 
-    public Event(String name, String description, String contactEmail, String zipcode, @Min(message = "Have at least one guest.", value = 1) @Max(message = "Only 999 guest allowed.", value = 999) String attendees, @AssertTrue(message = "Must be true") boolean isRSVPRequired) {
-        this();
+    public Event(EventType type, String name, String description, String contactEmail, String zipcode, @Min(message = "Have at least one guest.", value = 1) @Max(message = "Only 999 guest allowed.", value = 999) String attendees, @AssertTrue(message = "Must be true") boolean isRSVPRequired) {
+        this.type = type;
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
@@ -41,13 +48,17 @@ public class Event {
         this.isRSVPRequired = isRSVPRequired;
     }
 
-    public Event() {
-        this.id = nextId++;
-    };
+    public Event() {};
 
     @Override
     public String toString() {
         return name;
+    }
+
+    public EventType getType() {return type; }
+
+    public void setType(EventType type) {
+        this.type = type;
     }
 
     public boolean getIsRSVPRequired() {
