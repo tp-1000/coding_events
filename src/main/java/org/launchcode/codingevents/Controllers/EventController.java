@@ -2,14 +2,14 @@ package org.launchcode.codingevents.Controllers;
 
 import org.launchcode.codingevents.data.EventData;
 import org.launchcode.codingevents.models.Event;
+import org.launchcode.codingevents.models.EventType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Controller
 @RequestMapping("events")
@@ -27,6 +27,7 @@ public class EventController {
     public String renderCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
         model.addAttribute(new Event()); // it implecitly creates "event", new Event()); ///
+        model.addAttribute("types", (EventType.values()));
         return "events/create";
     }
 
@@ -61,11 +62,12 @@ public class EventController {
     }
 
     @GetMapping("/edit/{eventId}")
-    public String displayEditFrom(@PathVariable int eventId, Model model) {
+    public String displayEditFrom(@PathVariable int eventId, EventType type, Model model) {
         model.addAttribute("title", "Edit Event");
         Event event = EventData.getEvent(eventId);
         model.addAttribute("event", event);
-     return "events/edit";
+        model.addAttribute("types", (EventType.values()));
+        return "events/edit";
     }
 
     @PostMapping("/edit")
