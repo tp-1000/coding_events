@@ -1,6 +1,5 @@
 package org.launchcode.codingevents.Controllers;
 
-import org.launchcode.codingevents.data.EventData;
 import org.launchcode.codingevents.data.EventRepository;
 import org.launchcode.codingevents.models.Event;
 import org.launchcode.codingevents.models.EventType;
