@@ -1,8 +1,6 @@
 package org.launchcode.codingevents.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Objects;
 
@@ -18,6 +16,7 @@ public class Event {
     private String name;
     @Size(max = 500, message = "Description to long!")
     private String description;
+
     @NotBlank(message="Email is required")
     @Email(message = "Invalid email. Try again.")
     private String contactEmail;
@@ -33,6 +32,7 @@ public class Event {
     @Max(message = "Only 999 guest allowed.", value = 999)
     private String attendees;
 
+    @Enumerated(EnumType.ORDINAL)
     private EventType type;
 
 

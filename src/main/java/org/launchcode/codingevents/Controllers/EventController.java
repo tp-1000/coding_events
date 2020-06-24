@@ -1,8 +1,10 @@
 package org.launchcode.codingevents.Controllers;
 
 import org.launchcode.codingevents.data.EventData;
+import org.launchcode.codingevents.data.EventRepository;
 import org.launchcode.codingevents.models.Event;
 import org.launchcode.codingevents.models.EventType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,10 +17,18 @@ import javax.validation.Valid;
 @RequestMapping("events")
 public class EventController {
 
+    @Autowired // spring manages this class (dependency injection --- inversion of control) Springboot! i need a repository object!!
+    // the @Repository annotation flags this is a class that should be managed by spring, it will be provided for requests and injected
+    //obsever-- cannot create a interface object (needs  class that implements this interface)
+    // java can create classes on the fly, runtime
+    private EventRepository eventRepository;
+
+    // findAll, save, findById
+
     @GetMapping
     public String displayAllEvents(Model model) {
         model.addAttribute( "title", "All Events");
-        model.addAttribute("events", EventData.getAll());
+        model.addAttribute("events", eventRepository.findAll());
         return "events/index";
     }
 
@@ -38,14 +48,14 @@ public class EventController {
 //            model.addAttribute("errorMsg", "Bad data!");
             return "events/create";
         }
-        EventData.add(newEvent);
+        eventRepository.save(newEvent);
         return "redirect:"; // redicrect to root
     }
 
     @GetMapping("delete") // not same model as in the MVC// the class
     public String displayDeleteEventForm(Model model) {
         model.addAttribute("title", "Delete Events");
-        model.addAttribute("events", EventData.getAll());
+        model.addAttribute("events", eventRepository.findAll());
         return "events/delete";
     }
 
@@ -54,7 +64,7 @@ public class EventController {
 
         if(eventIds != null) {
             for (int id : eventIds) {
-                EventData.remove(id);
+                eventRepository.deleteById(id);
             }
         }
 
@@ -64,19 +74,18 @@ public class EventController {
     @GetMapping("/edit/{eventId}")
     public String displayEditFrom(@PathVariable int eventId, EventType type, Model model) {
         model.addAttribute("title", "Edit Event");
-        Event event = EventData.getEvent(eventId);
-        model.addAttribute("event", event);
+        model.addAttribute("event", eventRepository.findById(eventId));
         model.addAttribute("types", (EventType.values()));
         return "events/edit";
     }
 
     @PostMapping("/edit")
     public String processEditForm(@ModelAttribute @Valid Event event, Errors errors, int eventId) {
-        EventData.remove(eventId);
+        eventRepository.deleteById(eventId);
         if(errors.hasErrors()) {
             return "events/edit";
     } // very picky about parameter mapping
-        EventData.add(event);
+        eventRepository.save(event);
         return "redirect:";
     }
 //

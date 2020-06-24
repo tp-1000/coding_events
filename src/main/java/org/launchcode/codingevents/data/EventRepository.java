@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EventRepository extends CrudRepository<Event, Integer> { //object type and primary key type
+public interface EventRepository extends CrudRepository<Event, Integer> { //object type and primary key type (contains SQL methods)
 }
