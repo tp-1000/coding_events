@@ -18,6 +18,7 @@
 body class="container">
 
 <nav th:fragment="navigation">
+    <h1 th:text="${title}"></h1>
     <ul class="nav">
         <li class="nav-item"><a class="nav-link" href="/events">All events</a></li>
         <li class="nav-item"><a class="nav-link" href="/events/create">Create event</a></li>
