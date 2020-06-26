@@ -2,14 +2,9 @@ package org.launchcode.codingevents.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.Objects;
 
 @Entity
-public class Event {
-
-    @Id
-    @GeneratedValue
-    private int id;
+public class Event extends AbstractEntity{
 
     @Size(min = 3, max = 50, message = "Name must be between 3-50 characters")
     @NotBlank(message="Name is required")
@@ -32,7 +27,7 @@ public class Event {
     @Max(message = "Only 999 guest allowed.", value = 999)
     private String attendees;
 
-    @Enumerated(EnumType.ORDINAL)
+
     private EventType type;
 
 
@@ -109,20 +104,4 @@ public class Event {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Event event = (Event) o;
-        return id == event.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
