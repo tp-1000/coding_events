@@ -1,7 +1,9 @@
 package org.launchcode.codingevents.Controllers;
 
+import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.data.EventRepository;
 import org.launchcode.codingevents.models.Event;
+import org.launchcode.codingevents.models.EventCategory;
 import org.launchcode.codingevents.models.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ public class EventController {
     // java can create classes on the fly, runtime
     private EventRepository eventRepository;
 
+    @Autowired
+    private EventCategoryRepository eventCategoryRepository;
     // findAll, save, findById
 
     @GetMapping
@@ -36,7 +40,7 @@ public class EventController {
     public String renderCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
         model.addAttribute(new Event()); // it implecitly creates "event", new Event()); ///
-        model.addAttribute("types", (EventType.values()));
+        model.addAttribute("categories", (eventCategoryRepository.findAll()));
         return "events/create";
     }
 
@@ -71,10 +75,11 @@ public class EventController {
     }
 
     @GetMapping("/edit/{eventId}")
-    public String displayEditFrom(@PathVariable int eventId, EventType type, Model model) {
+    public String displayEditFrom(@PathVariable Integer eventId, Model model) {
         model.addAttribute("title", "Edit Event");
-        model.addAttribute("event", eventRepository.findById(eventId));
-        model.addAttribute("types", (EventType.values()));
+        Event event = eventRepository.findById(eventId).get();
+        model.addAttribute("event", event);
+        model.addAttribute("categories", eventCategoryRepository.findAll());
         return "events/edit";
     }
 

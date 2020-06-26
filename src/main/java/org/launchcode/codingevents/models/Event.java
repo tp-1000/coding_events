@@ -27,13 +27,14 @@ public class Event extends AbstractEntity{
     @Max(message = "Only 999 guest allowed.", value = 999)
     private String attendees;
 
+    @ManyToOne
+    @NotNull(message = "Category is required")
+    private EventCategory eventCategory;
 
-    private EventType type;
 
 
-
-    public Event(EventType type, String name, String description, String contactEmail, String zipcode, @Min(message = "Have at least one guest.", value = 1) @Max(message = "Only 999 guest allowed.", value = 999) String attendees, @AssertTrue(message = "Must be true") boolean isRSVPRequired) {
-        this.type = type;
+    public Event(EventCategory eventCategory, String name, String description, String contactEmail, String zipcode, @Min(message = "Have at least one guest.", value = 1) @Max(message = "Only 999 guest allowed.", value = 999) String attendees, @AssertTrue(message = "Must be true") boolean isRSVPRequired) {
+        this.eventCategory = eventCategory;
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
@@ -50,10 +51,12 @@ public class Event extends AbstractEntity{
         return name;
     }
 
-    public EventType getType() {return type; }
+    public EventCategory getEventCategory() {
+        return eventCategory;
+    }
 
-    public void setType(EventType type) {
-        this.type = type;
+    public void setEventCategory(EventCategory eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     public boolean getIsRSVPRequired() {
