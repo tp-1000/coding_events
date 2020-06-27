@@ -1,6 +1,9 @@
 package org.launchcode.codingevents.models;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 @Entity
@@ -9,39 +12,19 @@ public class Event extends AbstractEntity{
     @Size(min = 3, max = 50, message = "Name must be between 3-50 characters")
     @NotBlank(message="Name is required")
     private String name;
-    @Size(max = 500, message = "Description to long!")
-    private String description;
-
-    @NotBlank(message="Email is required")
-    @Email(message = "Invalid email. Try again.")
-    private String contactEmail;
-
-    @NotEmpty(message = "Required")
-    @Digits(integer = 5, fraction = 0, message = "Provide 5 digit zipcode")
-    private String zipcode;
-
-    @AssertTrue(message = "Must be true")
-    private boolean isRSVPRequired;
-
-    @Min(message = "Must have at least one guest.", value = 1)
-    @Max(message = "Only 999 guest allowed.", value = 999)
-    private String attendees;
 
     @ManyToOne
     @NotNull(message = "Category is required")
     private EventCategory eventCategory;
 
+    @OneToOne(cascade = CascadeType.ALL) //save event needs to save event details object -- specifies all database operations cascade
+    @Valid
+    @NotNull
+    private EventDetails eventDetails;
 
-
-    public Event(EventCategory eventCategory, String name, String description, String contactEmail, String zipcode, @Min(message = "Have at least one guest.", value = 1) @Max(message = "Only 999 guest allowed.", value = 999) String attendees, @AssertTrue(message = "Must be true") boolean isRSVPRequired) {
+    public Event(EventCategory eventCategory, String name) {
         this.eventCategory = eventCategory;
         this.name = name;
-        this.description = description;
-        this.contactEmail = contactEmail;
-        this.zipcode = zipcode;
-
-        this.attendees = attendees;
-        this.isRSVPRequired = isRSVPRequired;
     }
 
     public Event() {};
@@ -59,44 +42,12 @@ public class Event extends AbstractEntity{
         this.eventCategory = eventCategory;
     }
 
-    public boolean getIsRSVPRequired() {
-        return isRSVPRequired;
+    public EventDetails getEventDetails() {
+        return eventDetails;
     }
 
-    public void setIsRSVPRequired(boolean isRSVPRequired) {
-        this.isRSVPRequired = isRSVPRequired;
-    }
-
-    public String getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(String attendees) {
-        this.attendees = attendees;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEventDetails(EventDetails eventDetails) {
+        this.eventDetails = eventDetails;
     }
 
     public String getName() {

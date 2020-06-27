@@ -65,6 +65,8 @@ public class EventController {
 //            model.addAttribute("errorMsg", "Bad data!");
             return "events/create";
         }
+        //could use a eventdetails repository -- to save sub object -- or you could use cascade
+        //whenever an event is saved. save sub objects as well
         eventRepository.save(newEvent);
         return "redirect:"; // redicrect to root
     }
