@@ -29,7 +29,7 @@ public class EventController {
     private EventCategoryRepository eventCategoryRepository;
     // findAll, save, findById
 
-    @GetMapping
+    @GetMapping//url that is server is this line
     public String displayAllEvents(@RequestParam(required = false) Integer categoryId, Model model) {
         if (categoryId == null) {
             model.addAttribute("title", "All Events");
@@ -46,7 +46,7 @@ public class EventController {
         }
 
 
-        return "events/index";
+        return "events/index"; //internal location of HTML that is being served with the above address
     }
 
     //lives at /events/create   (for a get request deliver template events/create
@@ -101,13 +101,28 @@ public class EventController {
 
     @PostMapping("/edit")
     public String processEditForm(@ModelAttribute @Valid Event event, Errors errors, int eventId) {
+        if (errors.hasErrors()) {
+            return "events/edit";//this page is served with a invalid event object to popluate it
+        }
         eventRepository.deleteById(eventId);
-        if(errors.hasErrors()) {
-            return "events/edit";
-    } // very picky about parameter mapping
         eventRepository.save(event);
         return "redirect:";
     }
+
+    @GetMapping("/details/{id}")
+    public String displayDetails(@PathVariable Integer id, Model model) {
+        Optional<Event> event = eventRepository.findById(id);
+        if (event.isEmpty()){
+            model.addAttribute("title", "Event not found");
+            return "/events/index";
+        }
+        model.addAttribute("title", eventRepository.findById(id).get().getName() + " Details");
+        model.addAttribute("event", eventRepository.findById(id).get());
+        return "events/details";
+    }
+
+
+
 //
 //    warrants a bit of an explanation after the trouble, @ModelAttribute matches objects meeting the criteria an dadds them to the model as
 //     temp (working) object -- the other issue is that if I redirect to a handler, it makes two requests, a post and the the redirect. The post can truely be through

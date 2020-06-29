@@ -20,42 +20,42 @@
 
         <div class="form-group">
             <label>Description
-                <textarea class="form-control" th:field="${event.description}"></textarea>
+                <textarea class="form-control" th:field="${event.eventDetails.description}"></textarea>
             </label>
-            <p class="error" th:errors="${event.description}"></p>
+            <p class="error" th:errors="${event.eventDetails.description}"></p>
         </div>
 
         <div class="form-group">
             <label> Zipcode
-                <input class="form-control" th:field="${event.zipcode}">
+                <input class="form-control" th:field="${event.eventDetails.zipcode}">
             </label>
-            <p class="error" th:errors="${event.zipcode}"></p>
+            <p class="error" th:errors="${event.eventDetails.zipcode}"></p>
         </div>
 
         <div class="form-group">
             <label> Contact Email
-                <input class="form-control" th:field="${event.contactEmail}">
+                <input class="form-control" th:field="${event.eventDetails.contactEmail}">
             </label>
-            <p class="error" th:errors="${event.contactEmail}"></p>
+            <p class="error" th:errors="${event.eventDetails.contactEmail}"></p>
         </div>
 
 
         <div class="form-group">
             <p>RSVP</p>
-            <p class="error" th:errors="${event.isRSVPRequired}"></p>
+            <p class="error" th:errors="${event.eventDetails.isRSVPRequired}"></p>
             <label> Yes
-                <input type="radio" class="form-control" th:field="${event.isRSVPRequired}" value="true">
+                <input type="radio" class="form-control" th:field="${event.eventDetails.isRSVPRequired}" value="true">
             </label>
             <label> No
-                <input type="radio" class="form-control" th:field="${event.isRSVPRequired}" value="false">
+                <input type="radio" class="form-control" th:field="${event.eventDetails.isRSVPRequired}" value="false">
             </label>
         </div>
 
         <div class="form-group">
             <label> Number of Guests
-                <input class="form-control" th:field="${event.attendees}">
+                <input class="form-control" th:field="${event.eventDetails.attendees}">
             </label>
-            <p class="error" th:errors="${event.attendees}"></p>
+            <p class="error" th:errors="${event.eventDetails.attendees}"></p>
         </div>
 
         <div class="form-group">
