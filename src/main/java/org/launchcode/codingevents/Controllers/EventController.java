@@ -2,9 +2,11 @@ package org.launchcode.codingevents.Controllers;
 
 import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.data.EventRepository;
+import org.launchcode.codingevents.data.TagRepository;
 import org.launchcode.codingevents.models.Event;
 import org.launchcode.codingevents.models.EventCategory;
-import org.launchcode.codingevents.models.EventType;
+import org.launchcode.codingevents.models.Tags;
+import org.launchcode.codingevents.models.dto.EventTagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,9 @@ public class EventController {
     @Autowired
     private EventCategoryRepository eventCategoryRepository;
     // findAll, save, findById
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @GetMapping//url that is server is this line
     public String displayAllEvents(@RequestParam(required = false) Integer categoryId, Model model) {
@@ -118,10 +123,39 @@ public class EventController {
         }
         model.addAttribute("title", eventRepository.findById(id).get().getName() + " Details");
         model.addAttribute("event", eventRepository.findById(id).get());
+        model.addAttribute("tags", event.get().getTags());
         return "events/details";
     }
 
+    //responds to requests at /events/add-tag?eventId=13
+    @GetMapping("add-tag")
+    public String displayAddTagForm(@RequestParam Integer eventId, Model model){
+        Optional<Event> result = eventRepository.findById(eventId);
+        Event event = result.get();
+        model.addAttribute("title", "Add tag to: " + event.getName());
+        model.addAttribute("tags", tagRepository.findAll());
+        EventTagDTO eventTag = new EventTagDTO();
+        eventTag.setEvent(event);
+        model.addAttribute("eventTag", eventTag);
+//        model.addAttribute("event", event);
+//        model.addAttribute("eventTag", new EventTagDTO());
+        return "events/add-tag";
+    }
 
+    @PostMapping("add-tag")
+    public String processAddTagForm(@ModelAttribute @Valid EventTagDTO eventTag, Model model, Errors error) {
+        if(!error.hasErrors()) {
+            Event event = eventTag.getEvent();
+            Tags tag = eventTag.getTag();
+            if(!event.getTags().contains(tag)){
+                event.addTag(tag);
+                eventRepository.save(event);//update sql query
+            }
+            return "redirect:details/" + event.getId();
+        }
+        //doubt check could it be : only
+        return "redirect:add-tag";
+    }
 
 //
 //    warrants a bit of an explanation after the trouble, @ModelAttribute matches objects meeting the criteria an dadds them to the model as
