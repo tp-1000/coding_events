@@ -19,7 +19,9 @@ Default port is set to localhost:8080 but can be reconfigured without ill effect
 
 Relationships:
 Many Tags <-> Many Events
+
 One Detail-> One Events
+
 One Category <-> Many Events
 
 --Future--
