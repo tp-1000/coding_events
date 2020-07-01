@@ -31,15 +31,15 @@ events based on a list of tags the user follows.
 
 a person class could look something like this:
 
-public class Person extends AbstractEntity // extends base for all entities
+	public class Person extends AbstractEntity // extends base for all entities
 	id
 	name
 
 	@Many to many relationship — DTO (person and events) 
 	final list of events attending
 	
-  @Many to many  - DTO (person and tags)
-  final list of tags interested in
+  	@Many to many  - DTO (person and tags)
+  	final list of tags interested in
 	
 	add an event to the list of events
 	remove an event
@@ -47,10 +47,11 @@ public class Person extends AbstractEntity // extends base for all entities
 	add to list of tags
 	remove list of tags
 
-  get list of recommended events based on interested tags 
+  	get list of recommended events based on interested tags 
   
   
-  ** other features could include the ability to create an event and have that event tied to the user. Granting management privileges 
+  ** other features could include the ability to create an event and have that event tied to the user. Granting management privileges
+  	to the creator.
   
   
   NOTE: This application was designed by LaunchCode, and my implementation would not have been possible without the help of many people at LaunchCode.
